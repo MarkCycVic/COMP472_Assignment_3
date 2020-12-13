@@ -15,7 +15,7 @@ class Model:
         doc = doc.casefold()
         for word in doc.split(' '):
             if word in ov:
-                ov[word] += lab
+                ov[word] = np.add(ov[word],lab)
             else:
                 ov[word] = lab
     # making the vocubulary through training. Documents and labels of dataset, d is the smoothing
@@ -80,22 +80,25 @@ class Model:
         true_l = data[3].values
         match = data[4].values
         accuracy, precision, recall = 0.0, np.array([0,0], dtype = 'f4'), np.array([0,0], dtype = 'f4')
+        truePos, falsePos = np.array([0,0], dtype = 'f4'), np.array([0,0], dtype = 'f4')
         for est, tru, mat in zip(estim_l, true_l, match):
+            if tru == "yes":
+                if est == 'yes':
+                    truePos[0] += 1
+                else:
+                    falsePos[1] += 1
+            else:
+                if est == 'yes':
+                    falsePos[0] += 1
+                else:
+                    truePos[1] += 1
             if mat == 'correct':
                 accuracy += 1
-                if est == 'yes':
-                    precision[0] += 1
-                else:
-                    precision[1] += 1
-                if tru == 'yes':
-                    recall[0] += 1
-                else:
-                    recall[1] += 1
-        print(precision)
-        print(recall)
+        precision[0] = truePos[0] / (truePos[0]+falsePos[0])
+        precision[1] = truePos[1] / (truePos[1]+falsePos[1])
+        recall[0] = truePos[0] / (truePos[0]+falsePos[1])
+        recall[1] = truePos[1] / (truePos[1]+falsePos[0])
         accuracy /= len(match)
-        precision /= len(match)
-        recall /= len(match)
         F1 = [2/(precision[0]**-1+recall[0]**-1),2/(precision[1]**-1+recall[1]**-1)]
         f = open(output_file, 'w')
         f.write('{:.4}\n'.format(accuracy))
