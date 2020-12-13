@@ -5,7 +5,7 @@
 * [Setup](#setup)
 
 ## General info
-This project is an application of state space search basics.
+This project is an implementation of a Naive Bayes model with the Bag-Of-Words approach to text classification. The dataset used is composed of tweet about coronavirus. The classification is done on whether the information is true or false (first label after data).
 	
 ## Technologies
 Project is created with:
