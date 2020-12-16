@@ -13,7 +13,7 @@ from Model import Model
 train_file = 'data/covid_training.tsv'
 train_documents, train_labels = Data.read_train_data(train_file)
 
-test_file = 'data/covid_test_public.tsv'
+test_file = 'data/test_set01.tsv'
 test_IDs, test_documents, test_labels = Data.read_test_data(test_file)
 
 # make model
